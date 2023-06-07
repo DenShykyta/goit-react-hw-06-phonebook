@@ -3,17 +3,33 @@ import { nanoid } from 'nanoid';
 import { useSelector, useDispatch } from 'react-redux';
 import { addContact } from 'redux/contactsSlice';
 import { getContacts } from 'redux/selectors';
+import { useState } from 'react';
 
 import css from './Form.module.css';
 
 export default function Form() {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
   const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
+
+  const handleInputChange = event => {
+    const { name, value } = event.target;
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+      case 'number':
+        setNumber(value);
+        break;
+      default:
+        console.warn(`Тип поля - ${name} не обробляється!`);
+    }
+  };
+
   const handleSubmit = event => {
     event.preventDefault();
-    const form = event.target;
-    const name = form.elements.name.value;
-    const number = form.elements.number.value;
+
     if (
       contacts.some(
         contact =>
@@ -26,13 +42,16 @@ export default function Form() {
     }
     dispatch(addContact({ id: nanoid(), name, number }));
 
-    form.reset();
+    setName('');
+    setNumber('');
   };
   return (
     <form className={css.form} onSubmit={handleSubmit}>
       <lable>
         Name
         <input
+          onChange={handleInputChange}
+          value={name}
           type="text"
           name="name"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -43,6 +62,8 @@ export default function Form() {
       <lable>
         Number
         <input
+          onChange={handleInputChange}
+          value={number}
           type="tel"
           name="number"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -50,9 +71,7 @@ export default function Form() {
           required
         />
       </lable>
-      <button type="submit" onSubmit={handleSubmit}>
-        Add contact
-      </button>
+      <button type="submit">Add contact</button>
     </form>
   );
 }
