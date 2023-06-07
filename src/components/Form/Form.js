@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import Notiflix from 'notiflix';
 import { nanoid } from 'nanoid';
 import { useSelector, useDispatch } from 'react-redux';
@@ -57,7 +56,3 @@ export default function Form() {
     </form>
   );
 }
-
-Form.popTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};

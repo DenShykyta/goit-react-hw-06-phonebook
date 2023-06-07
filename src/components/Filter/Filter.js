@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import css from './Filter.module.css';
 import { setFilter } from 'redux/filterSlice';
@@ -28,8 +27,3 @@ const Filter = () => {
 };
 
 export default Filter;
-
-Filter.popTypes = {
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-};
